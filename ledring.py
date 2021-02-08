@@ -93,15 +93,21 @@ if __name__ == '__main__':
             def on_connect(client,userdata,flags,rc):
                 print("Connected to MQTT Server (Code:"+str(rc)+")")
                 
-                #client.subscribe("$SYS/#")
+                #Subscribe to manual MQTT Controls
                 client.subscribe("ledring/wake")
                 client.subscribe("ledring/think")
                 client.subscribe("ledring/speak")
                 client.subscribe("ledring/off")
-                client.subscribe("hermes/asr/startListening")  
-                client.subscribe("hermes/hotword/alexa_raspberry-pi/detected")
+                client.subscribe("ledring/error")
+
+                #Subscribe to automatic MQTT Controls
+                client.subscribe("hermes/asr/startListening")
+                client.subscribe("hermes/audioServer/default/audioFrame")
                 client.subscribe("rhasspy/asr/default/default/audioCaptured")
-                pixels.bootup()                
+
+                #Subscribe to your wakeword
+                client.subscribe("hermes/hotword/<WAKE_WORD>/detected")
+                
             def on_message(client,userdata,msg):
                 #print(msg.topic+" "+str(msg.payload)) #Debug
                 #sys.stdout.flush()
@@ -121,10 +127,14 @@ if __name__ == '__main__':
                 # Rhasspy Automatic Led Ring Activation
                 if msg.topic == "hermes/asr/startListening":
                     pixels.wakeup()
-                if msg.topic == "hermes/hotword/alexa_raspberry-pi/detected":
+                if msg.topic == "hermes/hotword/<WAKE_WORD>/detected":
                     pixels.wakeup()
                 if msg.topic == "rhasspy/asr/default/default/audioCaptured":
                     pixels.think()
+                #Run once if rhasspy emits any message on this topic, then unsub
+                if msg.topic == "hermes/audioServer/default/audioFrame":
+                   if (client.unsubscribe("hermes/audioServer/default/audioFrame")):
+                        pixels.bootup()
 
             def on_subscribe(client,userdata,result,mid):
                    print("Subscribed to MQTT")
@@ -134,7 +144,7 @@ if __name__ == '__main__':
             client.username_pw_set(username="mqtt",password="mqtt")
             client.on_connect = on_connect
             client.on_message = on_message
-            client.connect("homeassistant.lan",1883,60)
+            client.connect("<MQTT_SERVER_ADDRESS>",1883,60)
             client.on_subscribe = on_subscribe
 
             client.loop_forever()            
