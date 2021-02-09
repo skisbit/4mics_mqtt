@@ -4,8 +4,8 @@ Controllable via Node-RED / Home Assistant or any MQTT service.
 
 PREREQUISITES:
 - 4 Microphone Respeaker with LED Ring fully set up (test with github.com/respeaker/4mics_hat)
-- pip install paho-mqtt
-- pip install numpy
+- sudo apt install python3-pip python-pip
+- pip install paho-mqtt spidev python-gpiozero numpy
 
 To start:
 $ python /path/to/file/ledring.py
