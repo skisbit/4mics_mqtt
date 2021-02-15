@@ -19,4 +19,4 @@ ledring/speak
 ledring/error
 ledring/off
 
-This can be run as a system service.
+This is designed be run as a system service.
