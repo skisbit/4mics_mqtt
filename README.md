@@ -47,3 +47,9 @@ ExecStart=python /home/pi/4mics_mqtt/ledring.py
 [Install]
 WantedBy=multi-user.target
 ```
+
+```
+sudo systemctl enable ledring.service
+sudo systemctl start ledring.service
+```
+
