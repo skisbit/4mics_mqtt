@@ -2,17 +2,17 @@
 MQTT controlled LED-ring for the Respeaker with 4 microphone (circular LED)
 Controllable via Node-RED / Home Assistant or any MQTT service.
 
-## PREREQUISITES:
+### Prerequisits:
 * 4 Microphone Respeaker with LED Ring fully set up (test with github.com/respeaker/4mics_hat)
 * sudo apt install python3-pip python-pip
 * pip install paho-mqtt spidev python-gpiozero numpy
 
-### To start:
+To start:
 
 ```
 python /path/to/file/ledring.py
 ```
-## MQTT Controls
+### MQTT Controls
 Currently paired with Rhasspy to respond to MQTT messages from the rhasspy server. Flashes green when Rhasspy is ready.
 The file can be configured to subcribe and respond to any MQTT message. Right now it responds to:
 ```
@@ -22,7 +22,7 @@ ledring/speak
 ledring/error
 ledring/off
 ```
-## Run as a system service
+### Run as a system service
 ```
 sudo nano "/etc/systemd/system/ledring.service"
 ```
