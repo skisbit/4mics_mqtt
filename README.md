@@ -3,7 +3,7 @@ MQTT controlled LED-ring for the Respeaker with 4 microphone (circular LED)
 Controllable via Node-RED / Home Assistant or any MQTT service.
 
 ### Installation/Prerequisites:
-1. 4 Microphone Respeaker with LED Ring fully set up (test with github.com/respeaker/4mics_hat)
+1. Make sure your 4mics_hat Respeaker is fully set up according to [this page](https://github.com/respeaker/4mics_hat)
 1. Run the following commands:
 ```
 sudo apt install python3-pip python-pip git-all
