@@ -1,8 +1,5 @@
 # Setup
-import apa102
-import time
-import threading
-import sys
+import apa102, time, threading, sys, json
 try:
     import queue as Queue
 except ImportError:
@@ -129,7 +126,8 @@ if __name__ == '__main__':
                 if msg.topic == "hermes/asr/startListening":
                     pixels.wakeup()
                 if msg.topic == "hermes/hotword/"+wakeword+"/detected":
-                    pixels.wakeup()
+                    if json.loads(msg.payload)["siteId"] == rhasspy_siteid:
+                        pixels.wakeup()
                 if msg.topic == "rhasspy/asr/"+rhasspy_siteid+"/default/audioCaptured":
                     pixels.think()
                 #Run once if rhasspy emits any message on this topic, then unsub
