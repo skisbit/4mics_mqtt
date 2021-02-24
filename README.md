@@ -5,13 +5,13 @@ Controllable via Node-RED / Home Assistant or any MQTT service.
 ### Installation/Prerequisites:
 1. Make sure your 4mics_hat Respeaker is fully set up according to [this page](https://github.com/respeaker/4mics_hat)
 2. Run the following commands:
-```
-sudo apt install python3-pip python-pip git-all
-sudo pip install paho-mqtt spidev python-gpiozero numpy
-cd /home/pi/
-sudo git clone https://github.com/skisbit/4mics_mqtt/
-sudo nano /home/pi/4mics_mqtt/config.py
-```
+  ```
+  sudo apt install python3-pip python-pip git-all
+  sudo pip install paho-mqtt spidev python-gpiozero numpy
+  cd /home/pi/
+  sudo git clone https://github.com/skisbit/4mics_mqtt/
+  sudo nano /home/pi/4mics_mqtt/config.py
+  ```
 3. Change variables in this file according to your Rhasspy and MQTT configuration
 4. Run the script:
 ```
