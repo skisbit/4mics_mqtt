@@ -21,7 +21,7 @@ python /home/pi/4mics_mqtt/ledring.py
 ### Updating
 ```
 cd /home/pi/
-sudo git clone https://github.com/skisbit/4mics_mqtt/
+sudo git pull https://github.com/skisbit/4mics_mqtt/
 ```
 ### MQTT Controls
 Currently paired with Rhasspy to respond to MQTT messages from the rhasspy server. Flashes green when Rhasspy is ready.
