@@ -5,15 +5,15 @@ Controllable via Node-RED / Home Assistant or any MQTT service.
 ### Installation/Prerequisites:
 1. Make sure your 4mics_hat Respeaker is fully set up according to [this page](https://github.com/respeaker/4mics_hat)
 1. Run the following commands:
-```
-sudo apt install python3-pip python-pip git-all
-sudo pip install paho-mqtt spidev python-gpiozero numpy
-cd /home/pi/
-sudo git clone https://github.com/skisbit/4mics_mqtt/
-sudo nano /home/pi/4mics_mqtt/config.py
-```
-1. Change variables in this file according to your Rhasspy and MQTT configuration
-1. Run the script:
+  ```
+  sudo apt install python3-pip python-pip git-all
+  sudo pip install paho-mqtt spidev python-gpiozero numpy
+  cd /home/pi/
+  sudo git clone https://github.com/skisbit/4mics_mqtt/
+  sudo nano /home/pi/4mics_mqtt/config.py
+  ```
+2. Change variables in this file according to your Rhasspy and MQTT configuration
+2. Run the script:
 ```
 python /home/pi/4mics_mqtt/ledring.py
 ```
