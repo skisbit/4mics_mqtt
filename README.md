@@ -18,12 +18,12 @@ sudo nano /home/pi/4mics_mqtt/config.py
 python /home/pi/4mics_mqtt/ledring.py
 ```
 
-### Updating
+### Updating:
 ```
 cd /home/pi/
 sudo git pull https://github.com/skisbit/4mics_mqtt/
 ```
-### MQTT Controls
+### MQTT Controls:
 Currently paired with Rhasspy to respond to MQTT messages from the rhasspy server. Flashes green when Rhasspy is ready.
 The file can be configured to subcribe and respond to any MQTT message. Right now it responds to:
 ```
@@ -34,11 +34,12 @@ ledring/error
 ledring/off
 ```
 
-### Run automatically as a system service
+### Run automatically as a system service at reboot:
+Create a service file:
 ```
 sudo nano "/etc/systemd/system/ledring.service"
 ```
-
+Insert this into the file:
 ```
 [Unit]
 Description=Led-Ring MQTT
@@ -52,7 +53,7 @@ ExecStart=python /home/pi/4mics_mqtt/ledring.py
 [Install]
 WantedBy=multi-user.target
 ```
-
+Create a symlink and start the process:
 ```
 sudo systemctl enable ledring.service
 sudo systemctl start ledring.service
