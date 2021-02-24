@@ -7,7 +7,7 @@ Controllable via Node-RED / Home Assistant or any MQTT service.
 2. Run the following commands:
 ```
 sudo apt install python3-pip python-pip git-all
-sudo pip install paho-mqtt spidev python-gpiozero numpy
+sudo pip install paho-mqtt spidev gpiozero numpy
 cd /home/pi/
 sudo git clone https://github.com/skisbit/4mics_mqtt/
 sudo nano /home/pi/4mics_mqtt/config.py
