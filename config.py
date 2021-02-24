@@ -1,11 +1,13 @@
 ### MQTT Configuration ###
-mqtt_server = ""
-mqtt_username = ""
-mqtt_password = ""
-mqtt_port = ""
+
+mqtt_server = ""      # "1.2.3.4" or "mqtt.server"
+mqtt_username = ""    # can be empty
+mqtt_password = ""    # can be empty
+mqtt_port = ""        # Usually "1883"
+
+
 
 ### Rhasspy Configuration ###
-# Insert the site ID for this device
-rhasspy_siteid = ""
-# Insert the wakeword for this device
-wakeword = ""
+
+rhasspy_siteid = ""   # Site ID from your rhasspy config
+wakeword = ""         # Wakeword name from your rhasspy config
