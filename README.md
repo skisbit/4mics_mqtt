@@ -19,4 +19,19 @@ ledring/speak
 ledring/error
 ledring/off
 
-This is designed be run as a system service.
+This can be run as a system service in linux.
+- sudo nano "/etc/systemd/system/ledring.service"
+
+``` UNIX
+[Unit]
+Description=Led-Ring MQTT
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=python /path/to/file/ledring.py
+
+[Install]
+WantedBy=multi-user.target
+```
