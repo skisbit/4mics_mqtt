@@ -8,6 +8,7 @@ try:
 except ImportError:
     import Queue as Queue
 
+from config import wakeword,mqtt_username,mqtt_password,mqtt_server,mqtt_port,rhasspy_siteid
 from gpiozero import LED
 from alexa_led_pattern import AlexaLedPattern
 from threading import Thread
@@ -102,11 +103,11 @@ if __name__ == '__main__':
 
                 #Subscribe to automatic MQTT Controls
                 client.subscribe("hermes/asr/startListening")
-                client.subscribe("hermes/audioServer/default/audioFrame")
-                client.subscribe("rhasspy/asr/default/default/audioCaptured")
+                client.subscribe("hermes/audioServer/"+rhasspy_siteid+"/audioFrame")
+                client.subscribe("rhasspy/asr/"+rhasspy_siteid+"/default/audioCaptured")
 
                 #Subscribe to your wakeword
-                client.subscribe("hermes/hotword/<WAKE_WORD>/detected")
+                client.subscribe("hermes/hotword/"+wakeword+"/detected")
                 
             def on_message(client,userdata,msg):
                 #print(msg.topic+" "+str(msg.payload)) #Debug
@@ -127,13 +128,13 @@ if __name__ == '__main__':
                 # Rhasspy Automatic Led Ring Activation
                 if msg.topic == "hermes/asr/startListening":
                     pixels.wakeup()
-                if msg.topic == "hermes/hotword/<WAKE_WORD>/detected":
+                if msg.topic == "hermes/hotword/"+wakeword+"/detected":
                     pixels.wakeup()
-                if msg.topic == "rhasspy/asr/default/default/audioCaptured":
+                if msg.topic == "rhasspy/asr/"+rhasspy_siteid+"/default/audioCaptured":
                     pixels.think()
                 #Run once if rhasspy emits any message on this topic, then unsub
-                if msg.topic == "hermes/audioServer/default/audioFrame":
-                   if (client.unsubscribe("hermes/audioServer/default/audioFrame")):
+                if msg.topic == "hermes/audioServer/"+rhasspy_siteid+"/audioFrame":
+                   if (client.unsubscribe("hermes/audioServer/"+rhasspy_siteid+"/audioFrame")):
                         pixels.bootup()
 
             def on_subscribe(client,userdata,result,mid):
@@ -141,10 +142,10 @@ if __name__ == '__main__':
 
 
             client = mqtt.Client()
-            client.username_pw_set(username="mqtt",password="mqtt")
+            client.username_pw_set(mqtt_username,mqtt_password)
             client.on_connect = on_connect
             client.on_message = on_message
-            client.connect("<MQTT_SERVER_ADDRESS>",1883,60)
+            client.connect(mqtt_server,mqtt_port,60)
             client.on_subscribe = on_subscribe
 
             client.loop_forever()            
