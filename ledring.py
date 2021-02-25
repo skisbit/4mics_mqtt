@@ -101,7 +101,7 @@ if __name__ == '__main__':
                 #Subscribe to automatic MQTT Controls
                 client.subscribe("hermes/asr/startListening")
                 client.subscribe("hermes/audioServer/"+rhasspy_siteid+"/audioFrame")
-                client.subscribe("rhasspy/asr/"+rhasspy_siteid+"/default/audioCaptured")
+                client.subscribe("rhasspy/asr/"+rhasspy_siteid+"/"+rhasspy_siteid+"/audioCaptured")
 
                 #Subscribe to your wakeword
                 client.subscribe("hermes/hotword/"+wakeword+"/detected")
@@ -128,7 +128,7 @@ if __name__ == '__main__':
                 if msg.topic == "hermes/hotword/"+wakeword+"/detected":
                     if json.loads(msg.payload)["siteId"] == rhasspy_siteid:
                         pixels.wakeup()
-                if msg.topic == "rhasspy/asr/"+rhasspy_siteid+"/default/audioCaptured":
+                if msg.topic == "rhasspy/asr/"+rhasspy_siteid+"/"+rhasspy_siteid+"/audioCaptured":
                     pixels.think()
                 #Run once if rhasspy emits any message on this topic, then unsub
                 if msg.topic == "hermes/audioServer/"+rhasspy_siteid+"/audioFrame":
@@ -136,7 +136,7 @@ if __name__ == '__main__':
                         pixels.bootup()
 
             def on_subscribe(client,userdata,result,mid):
-                   print("Subscribed to MQTT")
+                   print("Subscribed to MQTT - "+result)
 
 
             client = mqtt.Client()
