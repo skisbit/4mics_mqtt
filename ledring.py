@@ -136,7 +136,7 @@ if __name__ == '__main__':
                         pixels.bootup()
 
             def on_subscribe(client,userdata,result,mid):
-                   print("Subscribed to MQTT - "+result)
+                   print("Subscribed to MQTT Topic")
 
 
             client = mqtt.Client()
