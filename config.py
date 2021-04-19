@@ -10,4 +10,3 @@ mqtt_port = ""        # Usually "1883"
 ### Rhasspy Configuration ###
 
 rhasspy_siteid = ""   # Site ID from your rhasspy config
-wakeword = ""         # Wakeword name from your rhasspy config
