@@ -5,7 +5,7 @@ try:
 except ImportError:
     import Queue as Queue
 
-from config import wakeword,mqtt_username,mqtt_password,mqtt_server,mqtt_port,rhasspy_siteid
+from config import mqtt_username,mqtt_password,mqtt_server,mqtt_port,rhasspy_siteid
 from gpiozero import LED
 from alexa_led_pattern import AlexaLedPattern
 from threading import Thread
@@ -19,7 +19,7 @@ class Pixels:
         self.pattern = pattern(show=self.show)
 
         self.dev = apa102.APA102(num_led=self.PIXELS_N)
-        
+
         self.power = LED(5)
         self.power.on()
 
@@ -29,6 +29,19 @@ class Pixels:
         self.thread.start()
 
         self.last_direction = None
+
+
+
+
+    def loading(self, direction=0):
+        self.last_direction = direction
+        def f():
+            self.pattern.loading(direction)
+
+        self.put(f)
+
+
+
 
     def wakeup(self, direction=0):
         self.last_direction = direction
@@ -44,13 +57,15 @@ class Pixels:
             self.put(f)
         else:
             self.put(self.pattern.listen)
+    def think2(self):
+        self.put(self.pattern.think2)
 
     def think(self):
         self.put(self.pattern.think)
 
     def speak(self):
         self.put(self.pattern.speak)
-    
+
     def error(self):
         self.put(self.pattern.error)
 
@@ -90,7 +105,7 @@ if __name__ == '__main__':
 
             def on_connect(client,userdata,flags,rc):
                 print("Connected to MQTT Server (Code:"+str(rc)+")")
-                
+
                 #Subscribe to manual MQTT Controls
                 client.subscribe("ledring/wake")
                 client.subscribe("ledring/think")
@@ -102,14 +117,12 @@ if __name__ == '__main__':
                 client.subscribe("hermes/asr/startListening")
                 client.subscribe("hermes/audioServer/"+rhasspy_siteid+"/audioFrame")
                 client.subscribe("rhasspy/asr/"+rhasspy_siteid+"/"+rhasspy_siteid+"/audioCaptured")
+                client.subscribe("hermes/asr/textCaptured")
 
-                #Subscribe to your wakeword
-                client.subscribe("hermes/hotword/"+wakeword+"/detected")
-                
             def on_message(client,userdata,msg):
-                #print(msg.topic+" "+str(msg.payload)) #Debug
-                #sys.stdout.flush()
-                
+                print(msg.topic)
+                sys.stdout.flush()
+
                 # Manual Led Ring Activation
                 if msg.topic == "ledring/wake":
                     pixels.wakeup()
@@ -121,15 +134,14 @@ if __name__ == '__main__':
                     pixels.error()
                 if msg.topic == 'ledring/off':
                     pixels.off()
-                    
+
                 # Rhasspy Automatic Led Ring Activation
                 if msg.topic == "hermes/asr/startListening":
-                    pixels.wakeup()
-                if msg.topic == "hermes/hotword/"+wakeword+"/detected":
                     if json.loads(msg.payload)["siteId"] == rhasspy_siteid:
                         pixels.wakeup()
-                if msg.topic == "rhasspy/asr/"+rhasspy_siteid+"/"+rhasspy_siteid+"/audioCaptured":
-                    pixels.think()
+                #if msg.topic == "rhasspy/asr/"+rhasspy_siteid+"/"+rhasspy_siteid+"/audioCaptured":
+                if msg.topic == "hermes/asr/textCaptured":
+                        pixels.think()
                 #Run once if rhasspy emits any message on this topic, then unsub
                 if msg.topic == "hermes/audioServer/"+rhasspy_siteid+"/audioFrame":
                    if (client.unsubscribe("hermes/audioServer/"+rhasspy_siteid+"/audioFrame")):
@@ -138,7 +150,7 @@ if __name__ == '__main__':
             def on_subscribe(client,userdata,result,mid):
                    print("Subscribed to MQTT Topic")
 
-
+            pixels.loading()
             client = mqtt.Client()
             client.username_pw_set(mqtt_username,mqtt_password)
             client.on_connect = on_connect
@@ -146,10 +158,10 @@ if __name__ == '__main__':
             client.connect(mqtt_server,mqtt_port,60)
             client.on_subscribe = on_subscribe
 
-            client.loop_forever()            
-            
-            
-            
+            client.loop_forever()
+
+
+
 
     except KeyboardInterrupt:
         print '\nProgram halted.'

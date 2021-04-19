@@ -31,9 +31,9 @@ class AlexaLedPattern(object):
 
         self.show = show
         self.stop = False
-    
+
     def bootup(self):
-        
+
         step = 1
         position = 12
         for x in range(45):
@@ -49,8 +49,8 @@ class AlexaLedPattern(object):
 
             position += step
         self.show([0] * 4 * 12)
-                
-        
+
+
     def wakeup(self, direction=0):
         position = int((direction + 15) / (360 / self.pixels_number)) % self.pixels_number
 
@@ -58,6 +58,15 @@ class AlexaLedPattern(object):
         pixels[position * 4 + 2] = 48
 
         self.show(pixels)
+
+    def loading(self, direction=0):
+        while not self.stop: #Runs until changed
+                time.sleep(0.01)
+                direction=direction+1
+                position = int((direction + 15) / (360 / self.pixels_number)) % self.pixels_number
+                pixels = [0, 0, 2, 2, 0,0,0,2] * self.pixels_number
+                pixels[position * 4 + 2] = 12
+                self.show(pixels)
 
     def listen(self):
         pixels = [0, 0, 0, 24] * self.pixels_number
@@ -71,7 +80,7 @@ class AlexaLedPattern(object):
             self.show(pixels)
             time.sleep(0.2)
             pixels = pixels[-4:] + pixels[:-4]
-    
+
     def error(self):
         step = 1
         position = 12
